@@ -1,0 +1,24 @@
+{
+	"name" : "cythral/listen",
+	"type" : "library",
+	"description" : "A lightweight, simple, and object-oriented hooks system for PHP applications.",
+	"license" : "GPL-3.0",
+	"author" : {
+		"name" : "cythral",
+		"email" : "talen@cythral.com"
+	},
+
+	"require" : {
+		"php" : ">=7.0"
+	},
+
+	"autoload" : {
+		"psr-4" : {
+			"listen\\" : "src/"
+		}
+    },
+    
+	"require-dev": {
+		"satooshi/php-coveralls": "^2.0"
+	}
+}
