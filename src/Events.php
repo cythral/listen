@@ -10,7 +10,7 @@ abstract class Events {
 		self::$listeners[$event][] = $listener;
 	}
 	
-	static public function trigger(string $event, array $args = [], bool $delete = true) : int {
+	static public function trigger(string $event, array $args = [], bool $delete = true): int {
 		if(!self::exists($event)) return 0;
         foreach(self::$listeners[$event] as $listener) $listener(...$args);
         if($delete) self::delete($event);
