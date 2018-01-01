@@ -10,9 +10,14 @@ abstract class Events {
 		self::$listeners[$event][] = $listener;
 	}
 	
-	static public function trigger(string $event, array $args = [], bool $delete = true): int {
+	static public function trigger(string $event, array $args = [], bool $delete = true, $newthis = null): int {
 		if(!self::exists($event)) return 0;
-        foreach(self::$listeners[$event] as $listener) $listener(...$args);
+        
+        foreach(self::$listeners[$event] as $listener) {
+            if($newthis) $listener = $listener->bindTo($newthis);
+            $listener(...$args);
+        }
+
         if($delete) self::delete($event);
 		return self::count($event);
 	}
