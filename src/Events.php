@@ -33,9 +33,12 @@ abstract class Events {
     static public function attach(string $event, array $defaults, callable $function, int $maxcalls = 1) {
         if(!self::exists($event)) return $function(...$defaults);
 
+        $return = null;
         for($i = 0; ($i < $maxcalls && $i < count(self::$listeners[$event])); $i++) {
-            $function(...self::$listeners[$event][$i]());
+            $return = $function(...self::$listeners[$event][$i]());
         }
+
+        return $return;
     }
 
 	static public function count(string $event) {
