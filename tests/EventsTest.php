@@ -53,4 +53,28 @@ class EventsTest extends TestCase {
         Events::delete("testevent");
         $this->assertFalse(Events::exists("testevent"));
     }
+
+    public function testAttachWithListener() {
+        $this->expectOutputString("hi");
+
+        Events::listen("testevent", function() {
+            return ["hi"];
+        });
+
+        Events::attach("testevent", ["no"], function($out) {
+            echo $out;
+        });
+
+        Events::delete("testevent");
+    }
+
+    public function testAttachDefaults() {
+        $this->expectOutputString("no");
+
+        Events::attach("testevent", ["no"], function($out) {
+            echo $out;
+        });
+
+        Events::delete("testevent");
+    }
 }

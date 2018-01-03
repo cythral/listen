@@ -9,14 +9,35 @@ abstract class Events {
 		if(!self::exists($event)) self::$listeners[$event] = [];
 		self::$listeners[$event][] = $listener;
 	}
-	
-	static public function trigger(string $event, array $args = [], bool $delete = true): int {
+    
+    /**
+     * Triggers all of an event's listeners.
+     */
+	static public function trigger(string $event, array $args = [], bool $delete = true, $newthis = null): int {
 		if(!self::exists($event)) return 0;
-        foreach(self::$listeners[$event] as $listener) $listener(...$args);
+        
+
+        foreach(self::$listeners[$event] as $listener) {
+            static $count = 0;
+
+            if($newthis) $listener = $listener->bindTo($newthis);
+            $listener(...$args);
+
+            $count++;
+        }
+
         if($delete) self::delete($event);
-		return self::count($event);
+		return $count;
 	}
-	
+    
+    static public function attach(string $event, array $defaults, callable $function, int $maxcalls = 1) {
+        if(!self::exists($event)) return $function(...$defaults);
+
+        for($i = 0; ($i < $maxcalls && $i < count(self::$listeners[$event])); $i++) {
+            $function(...self::$listeners[$event][$i]());
+        }
+    }
+
 	static public function count(string $event) {
 		return (self::exists($event)) ? count(self::$listeners[$event]) : 0;
     }
