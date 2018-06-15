@@ -1,2 +1,2 @@
 # listen
-A lightweight, simple, and object-oriented hooks system for PHP applications.  Full documentation coming soon
+This project has been moved to gitlab and is now called [Devisr Events](https://gitlab.com/devisr/events)
